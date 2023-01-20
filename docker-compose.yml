@@ -1,0 +1,18 @@
+services:
+  app:
+    container_name: blog
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - 5500:5500
+    command: npm run devStart
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - 27017:27017
+    

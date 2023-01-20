@@ -5,9 +5,14 @@ const Article = require('./models/article')
 const methodOverride = require('method-override')
 const app = express()
 
-mongoose.connect('mongodb://localhost/blog');
+//Constants
+PORT = 5500;
 
-mongoose.set({strictQuery: true})
+// DB Mongo connection
+mongoose.set({strictQuery: false});
+mongoose.connect('mongodb://mongo:27017/blog');
+
+//APP
 app.set('view engine', 'ejs')
 app.use(express.urlencoded({ extended: false}))
 app.use(methodOverride('_method'))
@@ -15,7 +20,9 @@ app.use(methodOverride('_method'))
 app.get('/', async (req, res) => {
     const articles = await Article.find().sort({createdAt: 'desc'})
     res.render('articles/index', {articles: articles})
-})
+});
 
 app.use('/articles', articleRouter)
-app.listen(5500)
+app.listen(PORT, () => {
+    console.log('Server is running on PORT 5500')
+})
